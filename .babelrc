@@ -1,0 +1,17 @@
+{
+  "presets": ["@babel/env", "@babel/react"],
+  "plugins": [
+    [
+      "module-resolver", {
+        "root": ["."],
+        "alias": {
+          "~": "./src"
+        },
+        "cwd": "babelrc"
+      }
+    ],
+    ["@babel/plugin-proposal-decorators", { "legacy": true }],
+    ["@babel/plugin-proposal-class-properties", { "loose": true }],
+    ["@babel/transform-runtime"]
+  ]
+}
