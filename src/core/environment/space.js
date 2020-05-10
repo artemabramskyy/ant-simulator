@@ -8,26 +8,21 @@ const _generateLine = ({ width, entity }) => {
   return line;
 };
 
-const _generateColumn = ({ height, line }) => {
-  const column = [];
+const _generateColumns = ({ height, line }) => {
+  const columns = [];
 
   for (let i = 0; i < height; i++) {
-    column.push(line);
+    columns.push(line);
   }
 
-  return column;
+  return columns;
 };
 
 const generate = ({ width, height, entity }) => {
-  const space = [];
   const line = _generateLine({ width, entity });
-  const column = _generateColumn({ height, line });
+  const columns = _generateColumns({ height, line });
 
-  for (let i = 0; i < width; i++) {
-    space.push(column);
-  }
-
-  return space;
+  return columns;
 };
 
 export default { generate };

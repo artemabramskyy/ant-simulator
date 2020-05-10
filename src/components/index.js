@@ -1,12 +1,17 @@
+import React from 'react';
 import ReactDOM from 'react-dom';
+import environment from '~/core/environment';
 
 // Components
 import Main from '~/components/main';
 
 const init = () => {
-  const world = document.querySelector('#world');
+  const env = environment.create({ width: 5, height: 5 });
+  const root = document.querySelector('#root');
 
-  ReactDOM.render(Main, world);
+  console.log(env);
+
+  ReactDOM.render(<Main />, root);
 };
 
 init();
