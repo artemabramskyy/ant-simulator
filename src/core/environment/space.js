@@ -6,7 +6,7 @@ const _generateLine = ({ width, entity }) => {
   }
 
   return line;
-}
+};
 
 const _generateColumn = ({ height, line }) => {
   const column = [];
@@ -16,7 +16,7 @@ const _generateColumn = ({ height, line }) => {
   }
 
   return column;
-}
+};
 
 const generate = ({ width, height, entity }) => {
   const space = [];
