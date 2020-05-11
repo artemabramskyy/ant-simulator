@@ -1,13 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 
 const Space = inject('space')(
   observer(({ space }) => {
-    const { grid } = space;
+    const { grid, createSpace } = space;
 
-    console.log(grid);
+    useEffect(() => {
+      createSpace();
+    }, []);
 
-    return <div>here</div>;
+    return (
+      grid && grid.map((column, ci) => (
+        <div className='column' key={ci}>
+          {column.map((line, li) => <div className='cell' key={`${ci}-${li}`}>{`${ci}-${li}`}</div>)}
+        </div>
+      ))
+    );
   })
 );
 

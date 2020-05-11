@@ -10,7 +10,9 @@ import Space from '~/components/space';
 const Main = () => (
   /* eslint-disable-next-line react/jsx-props-no-spreading */
   <Provider {...stores}>
-    <Space />
+    <div className='container'>
+      <Space />
+    </div>
   </Provider>
 );
 

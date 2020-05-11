@@ -5,7 +5,7 @@ import environment from '~/core/environment';
 class Space {
   @observable grid;
 
-  @action create = () => {
+  @action createSpace = () => {
     this.grid = environment.create(configs);
   }
 }

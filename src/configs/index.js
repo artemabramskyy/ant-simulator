@@ -1,4 +1,4 @@
 export default {
-  width: 10,
-  height: 10
+  width: 5,
+  height: 5
 };
