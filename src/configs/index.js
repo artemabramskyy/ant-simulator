@@ -1,4 +1,8 @@
 export default {
-  width: 10,
-  height: 10
+  size: {
+    width: 10,
+    height: 10
+  },
+  env: 'dev',
+
 };

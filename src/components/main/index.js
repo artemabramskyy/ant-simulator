@@ -5,13 +5,13 @@ import { Provider } from 'mobx-react';
 import stores from '~/stores';
 
 // Components
-import Space from '~/components/space';
+import Grid from '~/components/grid';
 
 const Main = () => (
   /* eslint-disable-next-line react/jsx-props-no-spreading */
   <Provider {...stores}>
     <div className='container'>
-      <Space />
+      <Grid />
     </div>
   </Provider>
 );

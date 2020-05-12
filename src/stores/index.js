@@ -1,5 +1,7 @@
-import Space from '~/stores/space';
+import GridStore from '~/stores/grid';
+import AntStore from '~/stores/objects/ant';
 
-const space = new Space();
+const gridStore = new GridStore();
+const antStore = new AntStore();
 
-export default { space };
+export default { gridStore, antStore };
