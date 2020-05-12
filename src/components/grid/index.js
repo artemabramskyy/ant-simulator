@@ -12,15 +12,17 @@ const Grid = inject('gridStore', 'antStore')(
     }, []);
 
     return (
-      grid && grid.map((column, ci) => (
-        <div className='column' key={ci}>
-          {column.map((line, li) => {
-            const isAnt = position.y === ci && position.x === li;
+      <div className='wrapper'>
+        {grid && grid.map((column, ci) => (
+          <div className='column' key={ci}>
+            {column.map((line, li) => {
+              const isAnt = position.y === ci && position.x === li;
 
-            return <div className={`cell ${isAnt ? 'ant' : ''}`} key={`${ci}-${li}`}>{`${ci}-${li}`}</div>;
-          })}
-        </div>
-      ))
+              return <div className={`cell ${isAnt ? 'ant' : ''}`} key={`${ci}-${li}`} />;
+            })}
+          </div>
+        ))}
+      </div>
     );
   })
 );

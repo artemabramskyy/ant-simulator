@@ -8,6 +8,10 @@
   flex-direction: column;
 }
 
+.wrapper {
+  border: 1px solid grey;
+}
+
 .column {
   display: flex;
   justify-content: center;
@@ -20,6 +24,9 @@
   align-items: center;
   width: 40px;
   height: 40px;
+}
+
+.cell.dev {
   border: 1px solid grey;
 }
 
