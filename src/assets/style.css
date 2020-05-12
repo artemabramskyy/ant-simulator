@@ -31,7 +31,14 @@
 }
 
 .ant {
-  background-color: grey;
+  position: relative;
+}
+
+.ant:after {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  content: '🐜';
 }
 
 .antVision {
@@ -39,5 +46,13 @@
 }
 
 .honey {
+  position: relative;
   background-color: orange;
+}
+
+.honey:after {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  content: '🍯';
 }
