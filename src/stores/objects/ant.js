@@ -1,54 +1,93 @@
-import { observable, action } from 'mobx';
+import { observable, action, computed } from 'mobx';
 import configs from '~/configs';
 
 class AntStore {
-  @observable position = { x: 0, y: 0 };
+  @observable antPosition = configs.ant.position;
 
-  @observable color = 'red';
+  @observable antColor = configs.ant.color;
 
-  @observable velocity = 2;
+  @observable antVelocity = configs.ant.velocity;
 
-  @observable size = configs.size;
+  @observable antSize = configs.size;
 
-  @action move = ({ direction }) => {
+  @observable antVisionRadius = configs.ant.visionRadius;
+
+  @action _move = ({ direction }) => {
     switch (direction) {
       case 'right':
-        if (this.position.x + 1 < this.size.height) {
-          this.position.x += 1; // eslint-disable-line no-param-reassign
+        if (this.antPosition.x + this.antVelocity < this.antSize.height) {
+          this.antPosition.x += this.antVelocity; // eslint-disable-line no-param-reassign
         }
         break;
       case 'left':
-        if (this.position.x - 1 >= 0) {
-          this.position.x -= 1; // eslint-disable-line no-param-reassign
+        if (this.antPosition.x - this.antVelocity >= 0) {
+          this.antPosition.x -= this.antVelocity; // eslint-disable-line no-param-reassign
         }
         break;
       case 'up':
-        if (this.position.y - 1 >= 0) {
-          this.position.y -= 1; // eslint-disable-line no-param-reassign
+        if (this.antPosition.y - this.antVelocity >= 0) {
+          this.antPosition.y -= this.antVelocity; // eslint-disable-line no-param-reassign
         }
         break;
       case 'down':
-        if (this.position.y + 1 < this.size.height) {
-          this.position.y += 1; // eslint-disable-line no-param-reassign
+        if (this.antPosition.y + this.antVelocity < this.antSize.height) {
+          this.antPosition.y += this.antVelocity; // eslint-disable-line no-param-reassign
         }
         break;
     }
   }
 
-  @action initAntMoveSet = () => {
+  @computed get antVision() {
+    return {
+      top: {
+        y: this.antPosition.y - this.antVisionRadius,
+        x: this.antPosition.x
+      },
+      rightTop: {
+        y: this.antPosition.y - this.antVisionRadius,
+        x: this.antPosition.x + this.antVisionRadius
+      },
+      right: {
+        y: this.antPosition.y,
+        x: this.antPosition.x + this.antVisionRadius
+      },
+      rightBottom: {
+        y: this.antPosition.y + this.antVisionRadius,
+        x: this.antPosition.x + this.antVisionRadius
+      },
+      bottom: {
+        y: this.antPosition.y + this.antVisionRadius,
+        x: this.antPosition.x
+      },
+      leftBottom: {
+        y: this.antPosition.y + this.antVisionRadius,
+        x: this.antPosition.x - this.antVisionRadius
+      },
+      left: {
+        y: this.antPosition.y,
+        x: this.antPosition.x - this.antVisionRadius,
+      },
+      leftTop: {
+        y: this.antPosition.y - this.antVisionRadius,
+        x: this.antPosition.x - this.antVisionRadius
+      }
+    };
+  }
+
+  @action antInitMoveSet = () => {
     document.addEventListener('keypress', e => {
       switch (e.code) {
         case 'KeyW':
-          this.move({ direction: 'up' });
+          this._move({ direction: 'up' });
           break;
         case 'KeyS':
-          this.move({ direction: 'down' });
+          this._move({ direction: 'down' });
           break;
         case 'KeyA':
-          this.move({ direction: 'left' });
+          this._move({ direction: 'left' });
           break;
         case 'KeyD':
-          this.move({ direction: 'right' });
+          this._move({ direction: 'right' });
           break;
       }
     });
