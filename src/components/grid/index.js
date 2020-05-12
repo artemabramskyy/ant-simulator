@@ -1,25 +1,37 @@
 import React, { useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
+import classesUtil from '~/utils/classesMaker';
 
-const Grid = inject('gridStore', 'antStore')(
-  observer(({ gridStore, antStore }) => {
-    const { grid, createGrid } = gridStore;
-    const { initAntMoveSet, position } = antStore;
+const Grid = inject('gridStore', 'antStore', 'honeyStore')(
+  observer(({ gridStore, antStore, honeyStore }) => {
+    const { grid } = gridStore;
+    const { antInitMoveSet, antPosition, antVision } = antStore;
+    const { honeyPosition } = honeyStore;
 
     useEffect(() => {
-      createGrid();
-      initAntMoveSet();
+      antInitMoveSet();
     }, []);
+
+    const _classesLine = ({ column, line }) => classesUtil.generateClasses({
+      column,
+      line,
+      antPosition,
+      antVision,
+      honeyPosition
+    });
 
     return (
       <div className='wrapper'>
         {grid && grid.map((column, ci) => (
           <div className='column' key={ci}>
-            {column.map((line, li) => {
-              const isAnt = position.y === ci && position.x === li;
-
-              return <div className={`cell ${isAnt ? 'ant' : ''}`} key={`${ci}-${li}`} />;
-            })}
+            {column.map((line, li) => (
+              <div
+                className={`cell ${_classesLine({ column: ci, line: li })}`}
+                key={`${ci}-${li}`}
+              >
+                {`${ci}-${li}`}
+              </div>
+            ))}
           </div>
         ))}
       </div>

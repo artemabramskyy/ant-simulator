@@ -26,10 +26,18 @@
   height: 40px;
 }
 
-.cell.dev {
+.dev .cell {
   border: 1px solid grey;
 }
 
 .ant {
   background-color: grey;
+}
+
+.antVision {
+  background-color: lightcyan;
+}
+
+.honey {
+  background-color: orange;
 }
