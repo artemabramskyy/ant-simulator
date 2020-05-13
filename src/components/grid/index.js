@@ -28,7 +28,9 @@ const Grid = inject('gridStore', 'antStore', 'honeyStore')(
               <div
                 className={`cell ${_classesLine({ column: ci, line: li })}`}
                 key={`${ci}-${li}`}
-              />
+              >
+                {`${ci}-${li}`}
+              </div>
             ))}
           </div>
         ))}

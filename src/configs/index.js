@@ -7,7 +7,7 @@ export default {
   ant: {
     color: 'red',
     velocity: 1, // TODO: only 1 is supported
-    visionRadius: 1,
+    visionRadius: 2,
     position: { x: 0, y: 0 }
   },
   honey: { position: { x: 4, y: 4 } }

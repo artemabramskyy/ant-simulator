@@ -38,41 +38,28 @@ class AntStore {
   }
 
   @computed get antVision() {
-    return {
-      top: {
-        y: this.antPosition.y - this.antVisionRadius,
-        x: this.antPosition.x
-      },
-      rightTop: {
-        y: this.antPosition.y - this.antVisionRadius,
-        x: this.antPosition.x + this.antVisionRadius
-      },
-      right: {
-        y: this.antPosition.y,
-        x: this.antPosition.x + this.antVisionRadius
-      },
-      rightBottom: {
-        y: this.antPosition.y + this.antVisionRadius,
-        x: this.antPosition.x + this.antVisionRadius
-      },
-      bottom: {
-        y: this.antPosition.y + this.antVisionRadius,
-        x: this.antPosition.x
-      },
-      leftBottom: {
-        y: this.antPosition.y + this.antVisionRadius,
-        x: this.antPosition.x - this.antVisionRadius
-      },
-      left: {
-        y: this.antPosition.y,
-        x: this.antPosition.x - this.antVisionRadius,
-      },
-      leftTop: {
-        y: this.antPosition.y - this.antVisionRadius,
-        x: this.antPosition.x - this.antVisionRadius
-      }
+    const rightBottom = {
+      y: this.antPosition.y + this.antVisionRadius,
+      x: this.antPosition.x + this.antVisionRadius
     };
+    const leftTop = {
+      y: this.antPosition.y - this.antVisionRadius,
+      x: this.antPosition.x - this.antVisionRadius
+    };
+    const visionArea = [];
+
+    for (let { y } = leftTop; y <= rightBottom.y; y++) {
+      for (let { x } = leftTop; x <= rightBottom.x; x++) {
+        visionArea.push({ y, x });
+      }
+    }
+
+    return visionArea;
   }
+
+  // @computed get sawSomething() {
+
+  // }
 
   @action antInitMoveSet = () => {
     document.addEventListener('keypress', e => {
