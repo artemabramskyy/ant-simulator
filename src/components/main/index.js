@@ -9,13 +9,13 @@ import stores from '~/stores';
 
 // Components
 import Grid from '~/components/grid';
-import AntIntention from '~/components/ant/intention';
+import Stats from '~/components/stats';
 
 const Main = () => (
   /* eslint-disable-next-line react/jsx-props-no-spreading */
   <Provider {...stores}>
     <div className={`container ${configs.env}`}>
-      <AntIntention />
+      <Stats />
       <Grid />
     </div>
   </Provider>

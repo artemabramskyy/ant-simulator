@@ -44,28 +44,7 @@ class AntStore {
     this._lookingFor();
   }
 
-  @computed get antVision() {
-    const rightBottom = {
-      y: this.antPosition.y + this.antVisionRadius,
-      x: this.antPosition.x + this.antVisionRadius
-    };
-    const leftTop = {
-      y: this.antPosition.y - this.antVisionRadius,
-      x: this.antPosition.x - this.antVisionRadius
-    };
-    const visionArea = [];
-
-    for (let { y } = leftTop; y <= rightBottom.y; y++) {
-      for (let { x } = leftTop; x <= rightBottom.x; x++) {
-        visionArea.push({ y, x });
-      }
-    }
-
-    return visionArea;
-  }
-
   @action _lookingFor = () => {
-    console.log(this.statickObjects.honeyStore.honey);
     const { position, type, icon } = this.statickObjects.honeyStore.honey;
     const visionIndex = Object.keys(this.antVision)
       .find(av => this.antVision[av]?.x === position.x && this.antVision[av]?.y === position.y);
@@ -94,6 +73,26 @@ class AntStore {
           break;
       }
     });
+  }
+
+  @computed get antVision() {
+    const rightBottom = {
+      y: this.antPosition.y + this.antVisionRadius,
+      x: this.antPosition.x + this.antVisionRadius
+    };
+    const leftTop = {
+      y: this.antPosition.y - this.antVisionRadius,
+      x: this.antPosition.x - this.antVisionRadius
+    };
+    const visionArea = [];
+
+    for (let { y } = leftTop; y <= rightBottom.y; y++) {
+      for (let { x } = leftTop; x <= rightBottom.x; x++) {
+        visionArea.push({ y, x });
+      }
+    }
+
+    return visionArea;
   }
 }
 
