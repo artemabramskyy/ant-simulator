@@ -10,5 +10,9 @@ export default {
     visionRadius: 2,
     position: { x: 0, y: 0 }
   },
-  honey: { position: { x: 4, y: 4 } }
+  honey: {
+    position: { x: 4, y: 4 },
+    type: 'honey',
+    icon: '🍯'
+  }
 };

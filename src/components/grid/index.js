@@ -5,8 +5,10 @@ import classesUtil from '~/utils/classesMaker';
 const Grid = inject('gridStore', 'antStore', 'honeyStore')(
   observer(({ gridStore, antStore, honeyStore }) => {
     const { grid } = gridStore;
-    const { antInitMoveSet, antPosition, antVision } = antStore;
-    const { honeyPosition } = honeyStore;
+    const { antInitMoveSet,
+      antPosition,
+      antVision } = antStore;
+    const { honey } = honeyStore;
 
     useEffect(() => {
       antInitMoveSet();
@@ -17,7 +19,7 @@ const Grid = inject('gridStore', 'antStore', 'honeyStore')(
       line,
       antPosition,
       antVision,
-      honeyPosition
+      honeyPosition: honey.position
     });
 
     return (

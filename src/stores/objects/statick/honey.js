@@ -2,7 +2,7 @@ import { observable } from 'mobx';
 import configs from '~/configs';
 
 class HoneyStore {
-  @observable honeyPosition = configs.honey.position;
+  @observable honey = configs.honey;
 }
 
 export default HoneyStore;

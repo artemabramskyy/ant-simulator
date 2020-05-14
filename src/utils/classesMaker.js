@@ -1,4 +1,8 @@
-const generateClasses = ({ column, line, antPosition, antVision, honeyPosition }) => {
+const generateClasses = ({ column,
+  line,
+  antPosition,
+  antVision,
+  honeyPosition }) => {
   const _antClass = value => (value ? 'ant' : '');
   const _antVisionClass = value => (value ? 'antVision' : '');
   const _honeyClass = value => (value ? 'honey' : '');

@@ -1,8 +1,19 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .container {
   display: flex;
   width: 60vw;
   height: 60vh;
-  margin: auto;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -34,6 +45,7 @@
   position: relative;
 }
 
+/* TODO: Get from object */
 .ant:after {
   display: flex;
   justify-content: center;
@@ -45,6 +57,7 @@
   background-color: lightcyan;
 }
 
+/* TODO: Get from object */
 .honey {
   position: relative;
   background-color: orange;
@@ -55,4 +68,35 @@
   justify-content: center;
   align-items: center;
   content: '🍯';
+}
+
+.stats {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 20vw;
+  position: fixed;
+  left: 1rem;
+  top: 1rem;
+}
+
+.intention {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 3rem;
+}
+
+.intention-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+.intention-item span {
+  display: block;
 }

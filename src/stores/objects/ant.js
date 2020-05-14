@@ -2,6 +2,10 @@ import { observable, action, computed } from 'mobx';
 import configs from '~/configs';
 
 class AntStore {
+  constructor({ statickObjects }) {
+    this.statickObjects = statickObjects;
+  }
+
   @observable antPosition = configs.ant.position;
 
   @observable antColor = configs.ant.color;
@@ -11,6 +15,8 @@ class AntStore {
   @observable antSize = configs.size;
 
   @observable antVisionRadius = configs.ant.visionRadius;
+
+  @observable antIntentions = [];
 
   @action _move = ({ direction }) => {
     switch (direction) {
@@ -35,6 +41,7 @@ class AntStore {
         }
         break;
     }
+    this._lookingFor();
   }
 
   @computed get antVision() {
@@ -57,9 +64,18 @@ class AntStore {
     return visionArea;
   }
 
-  // @computed get sawSomething() {
+  @action _lookingFor = () => {
+    console.log(this.statickObjects.honeyStore.honey);
+    const { position, type, icon } = this.statickObjects.honeyStore.honey;
+    const visionIndex = Object.keys(this.antVision)
+      .find(av => this.antVision[av]?.x === position.x && this.antVision[av]?.y === position.y);
 
-  // }
+    this.antIntentions = [];
+
+    if (visionIndex) {
+      this.antIntentions.push({ position: this.antVision[visionIndex], type, icon });
+    }
+  }
 
   @action antInitMoveSet = () => {
     document.addEventListener('keypress', e => {
