@@ -14,7 +14,7 @@ import Stats from '~/components/stats';
 const Main = () => (
   /* eslint-disable-next-line react/jsx-props-no-spreading */
   <Provider {...stores}>
-    <div className={`container ${configs.env}`}>
+    <div className={`container ${configs.env.state}`}>
       <Stats />
       <Grid />
     </div>

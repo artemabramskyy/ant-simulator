@@ -1,9 +1,11 @@
 import GridStore from '~/stores/environment/grid';
 import AntStore from '~/stores/objects/ant';
-import HoneyStore from '~/stores/objects/statick/honey';
+import HoneyStore from '~/stores/objects/static/honey';
 
 const gridStore = new GridStore();
 const honeyStore = new HoneyStore();
-const antStore = new AntStore({ statickObjects: { honeyStore } });
+const antStore = new AntStore({ staticObjects: { honeyStore } });
+
+console.log(antStore);
 
 export default { gridStore, antStore, honeyStore };

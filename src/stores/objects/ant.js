@@ -2,26 +2,26 @@ import { observable, action, computed } from 'mobx';
 import configs from '~/configs';
 
 class AntStore {
-  constructor({ statickObjects }) {
-    this.statickObjects = statickObjects;
+  constructor({ staticObjects }) {
+    this.staticObjects = staticObjects;
   }
 
-  @observable antPosition = configs.ant.position;
+  @observable antPosition = configs.app.objects.ant.position;
 
-  @observable antColor = configs.ant.color;
+  @observable antColor = configs.app.objects.ant.color;
 
-  @observable antVelocity = configs.ant.velocity;
+  @observable antVelocity = configs.app.objects.ant.velocity;
 
-  @observable antSize = configs.size;
+  @observable gridSize = configs.app.grid.size;
 
-  @observable antVisionRadius = configs.ant.visionRadius;
+  @observable antVisionRadius = configs.app.objects.ant.visionRadius;
 
   @observable antIntentions = [];
 
   @action _move = ({ direction }) => {
     switch (direction) {
       case 'right':
-        if (this.antPosition.x + this.antVelocity < this.antSize.height) {
+        if (this.antPosition.x + this.antVelocity < this.gridSize.width) {
           this.antPosition.x += this.antVelocity; // eslint-disable-line no-param-reassign
         }
         break;
@@ -36,7 +36,7 @@ class AntStore {
         }
         break;
       case 'down':
-        if (this.antPosition.y + this.antVelocity < this.antSize.height) {
+        if (this.antPosition.y + this.antVelocity < this.gridSize.height) {
           this.antPosition.y += this.antVelocity; // eslint-disable-line no-param-reassign
         }
         break;
@@ -45,7 +45,7 @@ class AntStore {
   }
 
   @action _lookingFor = () => {
-    const { position, type, icon } = this.statickObjects.honeyStore.honey;
+    const { position, type, icon } = this.staticObjects.honeyStore.honey;
     const visionIndex = Object.keys(this.antVision)
       .find(av => this.antVision[av]?.x === position.x && this.antVision[av]?.y === position.y);
 
