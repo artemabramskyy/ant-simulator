@@ -1,17 +1,20 @@
 import React, { useEffect } from 'react';
 import { inject, observer } from 'mobx-react';
 import classesUtil from '~/utils/classesMaker';
+import configs from '~/configs';
 
 const Grid = inject('gridStore', 'antStore', 'honeyStore')(
   observer(({ gridStore, antStore, honeyStore }) => {
     const { grid } = gridStore;
     const { antInitMoveSet,
+      initRandomMoves,
       antPosition,
       antVision } = antStore;
     const { honey } = honeyStore;
 
     useEffect(() => {
-      antInitMoveSet();
+      // antInitMoveSet(); // For manual management
+      initRandomMoves();
     }, []);
 
     const _classesLine = ({ column, line }) => classesUtil.generateClasses({
@@ -31,7 +34,7 @@ const Grid = inject('gridStore', 'antStore', 'honeyStore')(
                 className={`cell ${_classesLine({ column: ci, line: li })}`}
                 key={`${ci}-${li}`}
               >
-                {`${ci}-${li}`}
+                {configs.env.state === 'dev' ? `${ci}-${li}` : ''}
               </div>
             ))}
           </div>

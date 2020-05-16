@@ -1,3 +1,5 @@
+import configs from '~/configs';
+
 const generateClasses = ({ column,
   line,
   antPosition,
@@ -12,7 +14,7 @@ const generateClasses = ({ column,
   const _isHoney = honeyPosition.y === column && honeyPosition.x === line;
 
 
-  return `${_antClass(_isAnt)} ${_antVisionClass(_isAntVision)} ${_honeyClass(_isHoney)}`;
+  return `${_antClass(_isAnt)} ${configs.env.state === 'dev' ? _antVisionClass(_isAntVision) : ''} ${_honeyClass(_isHoney)}`;
 };
 
 export default { generateClasses };

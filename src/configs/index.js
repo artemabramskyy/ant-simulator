@@ -3,25 +3,25 @@ export default {
     tickRate: 500,
     grid: {
       size: {
-        width: 10,
-        height: 10
+        width: 100,
+        height: 70
       }
     },
     objects: {
       ant: {
         color: 'red',
         velocity: 1, // TODO: only 1 is supported
-        visionRadius: 2,
+        visionRadius: 5,
         position: { x: 0, y: 0 }
       },
       static: {
         honey: {
-          position: { x: 4, y: 4 },
+          position: { x: 9, y: 7 },
           type: 'honey',
           icon: '🍯'
         }
       }
     }
   },
-  env: { state: 'dev' }
+  env: { state: '' }
 };

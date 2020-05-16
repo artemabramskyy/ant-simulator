@@ -6,6 +6,4 @@ const gridStore = new GridStore();
 const honeyStore = new HoneyStore();
 const antStore = new AntStore({ staticObjects: { honeyStore } });
 
-console.log(antStore);
-
 export default { gridStore, antStore, honeyStore };

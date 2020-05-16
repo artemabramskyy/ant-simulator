@@ -1,8 +1,9 @@
 import { observable, action, computed } from 'mobx';
 import configs from '~/configs';
+import randomizer from '~/utils/randomizer';
 
 const { velocity, visionRadius } = configs.app.objects.ant;
-const { grid } = configs.app.grid;
+const { grid, tickRate } = configs.app;
 
 class AntStore {
   constructor({ staticObjects }) {
@@ -68,6 +69,48 @@ class AntStore {
           break;
       }
     });
+  }
+
+  @action initRandomMoves = () => {
+    const interval = setInterval(() => {
+      if (this.antIntentions.length) {
+        if (this._getMovesListToIntention.length === 1) clearInterval(interval);
+        this._move({ direction: this._getMovesListToIntention[0] });
+      } else {
+        this._move({ direction: randomizer.getDirection() });
+      }
+    }, tickRate);
+  }
+
+  @computed get _getMovesListToIntention() {
+    const movesList = [];
+    const intentionPosition = this.antIntentions[0].position;
+
+    if (this.antPosition.y < intentionPosition.y) {
+      for (let { y } = this.antPosition; y < intentionPosition.y; y++) {
+        movesList.push('down');
+      }
+    }
+
+    if (this.antPosition.y > intentionPosition.y) {
+      for (let { y } = this.antPosition; y > intentionPosition.y; y--) {
+        movesList.push('up');
+      }
+    }
+
+    if (this.antPosition.x < intentionPosition.x) {
+      for (let { x } = this.antPosition; x < intentionPosition.x; x++) {
+        movesList.push('right');
+      }
+    }
+
+    if (this.antPosition.x > intentionPosition.x) {
+      for (let { x } = this.antPosition; x > intentionPosition.x; x--) {
+        movesList.push('left');
+      }
+    }
+
+    return movesList;
   }
 
   @computed get antVision() {
