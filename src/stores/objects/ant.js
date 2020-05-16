@@ -1,6 +1,9 @@
 import { observable, action, computed } from 'mobx';
 import configs from '~/configs';
 
+const { velocity, visionRadius } = configs.app.objects.ant;
+const { grid } = configs.app.grid;
+
 class AntStore {
   constructor({ staticObjects }) {
     this.staticObjects = staticObjects;
@@ -8,36 +11,28 @@ class AntStore {
 
   @observable antPosition = configs.app.objects.ant.position;
 
-  @observable antColor = configs.app.objects.ant.color;
-
-  @observable antVelocity = configs.app.objects.ant.velocity;
-
-  @observable gridSize = configs.app.grid.size;
-
-  @observable antVisionRadius = configs.app.objects.ant.visionRadius;
-
   @observable antIntentions = [];
 
   @action _move = ({ direction }) => {
     switch (direction) {
       case 'right':
-        if (this.antPosition.x + this.antVelocity < this.gridSize.width) {
-          this.antPosition.x += this.antVelocity; // eslint-disable-line no-param-reassign
+        if (this.antPosition.x + velocity < grid.size.width) {
+          this.antPosition.x += velocity; // eslint-disable-line no-param-reassign
         }
         break;
       case 'left':
-        if (this.antPosition.x - this.antVelocity >= 0) {
-          this.antPosition.x -= this.antVelocity; // eslint-disable-line no-param-reassign
+        if (this.antPosition.x - velocity >= 0) {
+          this.antPosition.x -= velocity; // eslint-disable-line no-param-reassign
         }
         break;
       case 'up':
-        if (this.antPosition.y - this.antVelocity >= 0) {
-          this.antPosition.y -= this.antVelocity; // eslint-disable-line no-param-reassign
+        if (this.antPosition.y - velocity >= 0) {
+          this.antPosition.y -= velocity; // eslint-disable-line no-param-reassign
         }
         break;
       case 'down':
-        if (this.antPosition.y + this.antVelocity < this.gridSize.height) {
-          this.antPosition.y += this.antVelocity; // eslint-disable-line no-param-reassign
+        if (this.antPosition.y + velocity < grid.size.height) {
+          this.antPosition.y += velocity; // eslint-disable-line no-param-reassign
         }
         break;
     }
@@ -77,12 +72,12 @@ class AntStore {
 
   @computed get antVision() {
     const rightBottom = {
-      y: this.antPosition.y + this.antVisionRadius,
-      x: this.antPosition.x + this.antVisionRadius
+      y: this.antPosition.y + visionRadius,
+      x: this.antPosition.x + visionRadius
     };
     const leftTop = {
-      y: this.antPosition.y - this.antVisionRadius,
-      x: this.antPosition.x - this.antVisionRadius
+      y: this.antPosition.y - visionRadius,
+      x: this.antPosition.x - visionRadius
     };
     const visionArea = [];
 
