@@ -13,8 +13,12 @@ const generateClasses = ({ column,
   const _isAntVision = Object.keys(antVision).find(av => antVision[av].y === column && antVision[av].x === line);
   const _isHoney = honeyPosition.y === column && honeyPosition.x === line;
 
-
-  return `${_antClass(_isAnt)} ${configs.env.state === 'dev' ? _antVisionClass(_isAntVision) : ''} ${_honeyClass(_isHoney)}`;
+  return `
+    cell
+    ${_antClass(_isAnt)}
+    ${configs.env.state === 'dev' ? _antVisionClass(_isAntVision) : ''}
+    ${_honeyClass(_isHoney)}
+  `;
 };
 
 export default { generateClasses };

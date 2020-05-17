@@ -14,6 +14,8 @@ class AntStore {
 
   @observable antIntentions = [];
 
+  @observable antBag = configs.app.objects.ant.bag;
+
   @action _move = ({ direction }) => {
     switch (direction) {
       case 'right':
@@ -74,7 +76,11 @@ class AntStore {
   @action initRandomMoves = () => {
     const interval = setInterval(() => {
       if (this.antIntentions.length) {
-        if (this._getMovesListToIntention.length === 1) clearInterval(interval);
+        if (this._getMovesListToIntention.length === 1) {
+          this.antBag.push(this.staticObjects.honeyStore.honey);
+          this.staticObjects.honeyStore.honey.onGrid = false;
+          clearInterval(interval);
+        }
         this._move({ direction: this._getMovesListToIntention[0] });
       } else {
         this._move({ direction: randomizer.getDirection() });

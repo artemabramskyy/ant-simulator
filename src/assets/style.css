@@ -12,8 +12,8 @@ html, body, #root {
 
 .container {
   display: flex;
-  width: 60vw;
-  height: 60vh;
+  width: 70vw;
+  height: 70vh;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -33,41 +33,21 @@ html, body, #root {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 40px;
-  height: 40px;
+}
+
+.ant {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 
 .dev .cell {
   border: 1px solid grey;
 }
 
-.ant {
-  position: relative;
-}
-
-/* TODO: Get from object */
-.ant:after {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  content: '🐜';
-}
-
 .antVision {
   background-color: lightcyan;
-}
-
-/* TODO: Get from object */
-.honey {
-  position: relative;
-  background-color: orange;
-}
-
-.honey:after {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  content: '🍯';
 }
 
 .stats {
