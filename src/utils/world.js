@@ -17,7 +17,7 @@ export default class World {
 
     body.appendChild(canvasElement);
 
-    this.ctx = document.getElementById('grid').getContext('2d');
+    this.ctx = document.getElementById('grid').getContext('2d', { alpha: false });
     this.ctx.strokeStyle = 'red';
     this.ctx.font = '16px serif';
 
@@ -32,16 +32,32 @@ export default class World {
     });
   }
 
-  render(entities) {
-    if (entities.length) {
+  _drawVision(vision) {
+    this.ctx.strokeStyle = 'blue';
+    vision.forEach(v => {
+      if (v.x >= 0 && v.y >= 0) {
+        this.ctx.strokeRect(this._cellSize * v.x, this._cellSize * v.y, this._cellSize, this._cellSize);
+      }
+    });
+    this.ctx.strokeStyle = 'red';
+  }
+
+  render({ entities, vision }) {
+    if (entities?.length) {
       this.ctx.clearRect(0, 0, this._canvasSize, this._canvasSize);
-      this.drawGrid();
+      this._drawGrid();
 
       entities.forEach(entity => {
-        this.ctx.fillText(entity.icon, entity.position.x * this._cellSize, entity.position.y * this._cellSize);
+        this.ctx.fillText(
+          entity.icon,
+          (entity.position.x * this._cellSize) + (this._cellSize / 2) - 12,
+          (entity.position.y * this._cellSize) + (this._cellSize / 2) + 4
+        );
       });
-    } else {
-      throw new Error('Nothing to render!');
+    }
+
+    if (vision) {
+      this._drawVision(vision);
     }
   }
 }

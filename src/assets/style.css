@@ -2,6 +2,7 @@ html, body, #root {
   height: 100%;
   margin: 0;
   padding: 0;
+  background-color: rgb(63, 63, 63);
 }
 
 #root {
@@ -54,13 +55,14 @@ html, body, #root {
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
   width: 20vw;
   position: fixed;
   left: 1rem;
   top: 1rem;
 }
 
-.intention {
+.intention, .bag, .base {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -68,7 +70,7 @@ html, body, #root {
   margin-bottom: 3rem;
 }
 
-.intention-item {
+.intention-item, .base-storage {
   display: flex;
   flex-direction: column;
   justify-content: center;

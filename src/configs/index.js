@@ -2,15 +2,15 @@ export default {
   app: {
     tickRate: 100,
     grid: {
-      cells: 50,
-      size: 800
+      cells: 30,
+      size: 900
     },
     objects: {
       ant: {
         color: 'red',
         velocity: 1, // TODO: only 1 is supported
         visionRadius: 5,
-        position: { x: 0, y: 0 },
+        position: { x: 1, y: 1 },
         bag: [],
         icon: '🐜'
       },
@@ -20,6 +20,13 @@ export default {
           type: 'honey',
           icon: '🍯',
           onGrid: true
+        },
+        base: {
+          position: { x: 0, y: 0 },
+          type: 'base',
+          icon: '🌰',
+          onGrid: true,
+          storage: []
         }
       }
     }

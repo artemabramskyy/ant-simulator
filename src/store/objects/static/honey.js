@@ -1,4 +1,4 @@
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
 import configs from '~/configs';
 
 export default class HoneyStore {
@@ -7,4 +7,8 @@ export default class HoneyStore {
   }
 
   @observable honey = configs.app.objects.static.honey;
+
+  @action remove = () => {
+    this.honey.onGrid = false;
+  }
 }

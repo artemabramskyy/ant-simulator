@@ -8,8 +8,9 @@ export default class RealmStore {
     this.rootStore = store;
 
     this._initRealm();
-    this.rootStore.ant.initRandomMoves();
-    this.drawEntities([this.rootStore.ant.ant, this.rootStore.honey.honey]);
+    // this.rootStore.ant.initRandomMoves();
+    this.rootStore.ant.initMoveSet();
+    this.render();
   }
 
   @observable realm;
@@ -20,7 +21,17 @@ export default class RealmStore {
   }
 
   @action
-  drawEntities = entities => {
-    this.realm.render(entities);
+  render = () => {
+    const entities = [this.rootStore.ant.ant];
+
+    if (this.rootStore.honey.honey.onGrid) {
+      entities.push(this.rootStore.honey.honey);
+    }
+
+    if (this.rootStore.base.base.onGrid) {
+      entities.push(this.rootStore.base.base);
+    }
+
+    this.realm.render({ entities, vision: this.rootStore.ant.antVision });
   }
 }
