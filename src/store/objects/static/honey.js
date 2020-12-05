@@ -1,8 +1,10 @@
 import { observable } from 'mobx';
 import configs from '~/configs';
 
-class HoneyStore {
+export default class HoneyStore {
+  constructor(store) {
+    this.rootStore = store;
+  }
+
   @observable honey = configs.app.objects.static.honey;
 }
-
-export default HoneyStore;

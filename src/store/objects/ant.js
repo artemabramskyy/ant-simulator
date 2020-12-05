@@ -2,40 +2,37 @@ import { observable, action, computed } from 'mobx';
 import configs from '~/configs';
 import randomizer from '~/utils/randomizer';
 
-const { velocity, visionRadius } = configs.app.objects.ant;
 const { grid, tickRate } = configs.app;
 
-class AntStore {
-  constructor({ staticObjects }) {
-    this.staticObjects = staticObjects;
+export default class AntStore {
+  constructor(store) {
+    this.rootStore = store;
   }
 
-  @observable antPosition = configs.app.objects.ant.position;
+  @observable ant = configs.app.objects.ant;
 
   @observable antIntentions = [];
-
-  @observable antBag = configs.app.objects.ant.bag;
 
   @action _move = ({ direction }) => {
     switch (direction) {
       case 'right':
-        if (this.antPosition.x + velocity < grid.size.width) {
-          this.antPosition.x += velocity; // eslint-disable-line no-param-reassign
+        if (this.ant.position.x + this.ant.velocity < grid.size) {
+          this.ant.position.x += this.ant.velocity; // eslint-disable-line no-param-reassign
         }
         break;
       case 'left':
-        if (this.antPosition.x - velocity >= 0) {
-          this.antPosition.x -= velocity; // eslint-disable-line no-param-reassign
+        if (this.ant.position.x - this.ant.velocity >= 0) {
+          this.ant.position.x -= this.ant.velocity; // eslint-disable-line no-param-reassign
         }
         break;
       case 'up':
-        if (this.antPosition.y - velocity >= 0) {
-          this.antPosition.y -= velocity; // eslint-disable-line no-param-reassign
+        if (this.ant.position.y - this.ant.velocity >= 0) {
+          this.ant.position.y -= this.ant.velocity; // eslint-disable-line no-param-reassign
         }
         break;
       case 'down':
-        if (this.antPosition.y + velocity < grid.size.height) {
-          this.antPosition.y += velocity; // eslint-disable-line no-param-reassign
+        if (this.ant.position.y + this.ant.velocity < grid.size) {
+          this.ant.position.y += this.ant.velocity; // eslint-disable-line no-param-reassign
         }
         break;
     }
@@ -43,7 +40,7 @@ class AntStore {
   }
 
   @action _lookingFor = () => {
-    const { position, type, icon } = this.staticObjects.honeyStore.honey;
+    const { position, type, icon } = this.rootStore.honey.honey;
     const visionIndex = Object.keys(this.antVision)
       .find(av => this.antVision[av]?.x === position.x && this.antVision[av]?.y === position.y);
 
@@ -54,7 +51,7 @@ class AntStore {
     }
   }
 
-  @action antInitMoveSet = () => {
+  @action initMoveSet = () => {
     document.addEventListener('keypress', e => {
       switch (e.code) {
         case 'KeyW':
@@ -70,6 +67,8 @@ class AntStore {
           this._move({ direction: 'right' });
           break;
       }
+
+      this.rootStore.realm.drawEntities([this.ant, this.rootStore.honey.honey]);
     });
   }
 
@@ -77,14 +76,16 @@ class AntStore {
     const interval = setInterval(() => {
       if (this.antIntentions.length) {
         if (this._getMovesListToIntention.length === 1) {
-          this.antBag.push(this.staticObjects.honeyStore.honey);
-          this.staticObjects.honeyStore.honey.onGrid = false;
+          this.ant.bag.push(this.rootStore.honey.honey);
+          this.rootStore.honey.honey.onGrid = false;
           clearInterval(interval);
         }
         this._move({ direction: this._getMovesListToIntention[0] });
       } else {
         this._move({ direction: randomizer.getDirection() });
       }
+
+      this.rootStore.realm.drawEntities([this.ant, this.rootStore.honey.honey]);
     }, tickRate);
   }
 
@@ -92,26 +93,26 @@ class AntStore {
     const movesList = [];
     const intentionPosition = this.antIntentions[0].position;
 
-    if (this.antPosition.y < intentionPosition.y) {
-      for (let { y } = this.antPosition; y < intentionPosition.y; y++) {
+    if (this.ant.position.y < intentionPosition.y) {
+      for (let { y } = this.ant.position; y < intentionPosition.y; y++) {
         movesList.push('down');
       }
     }
 
-    if (this.antPosition.y > intentionPosition.y) {
-      for (let { y } = this.antPosition; y > intentionPosition.y; y--) {
+    if (this.ant.position.y > intentionPosition.y) {
+      for (let { y } = this.ant.position; y > intentionPosition.y; y--) {
         movesList.push('up');
       }
     }
 
-    if (this.antPosition.x < intentionPosition.x) {
-      for (let { x } = this.antPosition; x < intentionPosition.x; x++) {
+    if (this.ant.position.x < intentionPosition.x) {
+      for (let { x } = this.ant.position; x < intentionPosition.x; x++) {
         movesList.push('right');
       }
     }
 
-    if (this.antPosition.x > intentionPosition.x) {
-      for (let { x } = this.antPosition; x > intentionPosition.x; x--) {
+    if (this.ant.position.x > intentionPosition.x) {
+      for (let { x } = this.ant.position; x > intentionPosition.x; x--) {
         movesList.push('left');
       }
     }
@@ -121,12 +122,12 @@ class AntStore {
 
   @computed get antVision() {
     const rightBottom = {
-      y: this.antPosition.y + visionRadius,
-      x: this.antPosition.x + visionRadius
+      y: this.ant.position.y + this.ant.visionRadius,
+      x: this.ant.position.x + this.ant.visionRadius
     };
     const leftTop = {
-      y: this.antPosition.y - visionRadius,
-      x: this.antPosition.x - visionRadius
+      y: this.ant.position.y - this.ant.visionRadius,
+      x: this.ant.position.x - this.ant.visionRadius
     };
     const visionArea = [];
 
@@ -139,5 +140,3 @@ class AntStore {
     return visionArea;
   }
 }
-
-export default AntStore;

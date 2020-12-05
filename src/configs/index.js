@@ -1,11 +1,9 @@
 export default {
   app: {
-    tickRate: 200,
+    tickRate: 100,
     grid: {
-      size: {
-        width: 10,
-        height: 10
-      }
+      cells: 50,
+      size: 800
     },
     objects: {
       ant: {
@@ -26,5 +24,5 @@ export default {
       }
     }
   },
-  env: { state: '' }
+  env: { state: 'dev' }
 };
