@@ -12,7 +12,7 @@ html, body, #root {
 
 .container {
   display: flex;
-  width: 70vw;
+  width: 20vw;
   height: 70vh;
   justify-content: center;
   align-items: center;
@@ -79,4 +79,13 @@ html, body, #root {
 
 .intention-item span {
   display: block;
+}
+
+body {
+  display: flex;
+}
+
+#grid {
+  margin: auto;
+  border: 1px solid black;
 }

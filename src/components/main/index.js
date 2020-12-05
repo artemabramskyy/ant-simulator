@@ -1,22 +1,19 @@
 import React from 'react';
 import { Provider } from 'mobx-react';
 
-// Configs
-import configs from '~/configs';
-
 // Store
-import stores from '~/stores';
+import Store from '~/store';
 
 // Components
-import Grid from '~/components/grid';
 import Stats from '~/components/stats';
+
+const store = new Store();
 
 const Main = () => (
   /* eslint-disable-next-line react/jsx-props-no-spreading */
-  <Provider {...stores}>
-    <div className={`container ${configs.env.state}`}>
+  <Provider store={store}>
+    <div className='container'>
       <Stats />
-      <Grid />
     </div>
   </Provider>
 );

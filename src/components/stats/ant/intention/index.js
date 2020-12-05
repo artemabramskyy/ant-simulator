@@ -1,9 +1,9 @@
 import React from 'react';
 import { inject, observer } from 'mobx-react';
 
-const AntIntention = inject('antStore')(
-  observer(({ antStore }) => {
-    const { antIntentions } = antStore;
+const AntIntention = inject('store')(
+  observer(({ store }) => {
+    const { antIntentions } = store.ant;
 
     return (
       <div className='stats'>
@@ -29,7 +29,6 @@ const AntIntention = inject('antStore')(
           )}
         </div>
       </div>
-
     );
   })
 );
