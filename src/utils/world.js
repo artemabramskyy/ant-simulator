@@ -35,7 +35,7 @@ export default class World {
   render(entities) {
     if (entities.length) {
       this.ctx.clearRect(0, 0, this._canvasSize, this._canvasSize);
-      this.drawGrid();
+      this._drawGrid();
 
       entities.forEach(entity => {
         this.ctx.fillText(entity.icon, entity.position.x * this._cellSize, entity.position.y * this._cellSize);
