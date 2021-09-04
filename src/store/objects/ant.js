@@ -1,4 +1,5 @@
 import { observable, action, computed } from 'mobx';
+import 'mobx-react-lite/batchingForReactDom';
 import configs from '~/configs';
 import randomizer from '~/utils/randomizer';
 
@@ -13,10 +14,12 @@ export default class AntStore {
 
   @observable antIntentions = [];
 
+  @observable antBag = [];
+
   @action _move = ({ direction }) => {
     switch (direction) {
       case 'right':
-        if (this.ant.position.x + this.ant.velocity < grid.size) {
+        if (this.ant.position.x + this.ant.velocity < grid.cells) {
           this.ant.position.x += this.ant.velocity; // eslint-disable-line no-param-reassign
         }
         break;
@@ -31,12 +34,38 @@ export default class AntStore {
         }
         break;
       case 'down':
-        if (this.ant.position.y + this.ant.velocity < grid.size) {
+        if (this.ant.position.y + this.ant.velocity < grid.cells) {
           this.ant.position.y += this.ant.velocity; // eslint-disable-line no-param-reassign
         }
         break;
     }
     this._lookingFor();
+    this._takeInBag();
+    this._putInBase();
+  }
+
+  @action _putInBase = () => {
+    const { position } = this.rootStore.base.base;
+    if (this.rootStore.base.base.onGrid) {
+      if (this.ant.position.x === position.x && this.ant.position.y === position.y) {
+        this.rootStore.base.put(this.antBag);
+        this._removeFromBag();
+      }
+    }
+  }
+
+  @action _takeInBag = () => {
+    const { position, type, icon } = this.rootStore.honey.honey;
+    if (this.rootStore.honey.honey.onGrid) {
+      if (this.ant.position.x === position.x && this.ant.position.y === position.y) {
+        this.antBag.push({ type, icon });
+        this.rootStore.honey.remove();
+      }
+    }
+  }
+
+  @action _removeFromBag = () => {
+    this.antBag = [];
   }
 
   @action _lookingFor = () => {
@@ -46,7 +75,7 @@ export default class AntStore {
 
     this.antIntentions = [];
 
-    if (visionIndex) {
+    if (visionIndex && this.rootStore.honey.honey.onGrid) {
       this.antIntentions.push({ position: this.antVision[visionIndex], type, icon });
     }
   }
@@ -68,7 +97,7 @@ export default class AntStore {
           break;
       }
 
-      this.rootStore.realm.drawEntities([this.ant, this.rootStore.honey.honey]);
+      this.rootStore.realm.render();
     });
   }
 
@@ -76,8 +105,6 @@ export default class AntStore {
     const interval = setInterval(() => {
       if (this.antIntentions.length) {
         if (this._getMovesListToIntention.length === 1) {
-          this.ant.bag.push(this.rootStore.honey.honey);
-          this.rootStore.honey.honey.onGrid = false;
           clearInterval(interval);
         }
         this._move({ direction: this._getMovesListToIntention[0] });
@@ -85,7 +112,7 @@ export default class AntStore {
         this._move({ direction: randomizer.getDirection() });
       }
 
-      this.rootStore.realm.drawEntities([this.ant, this.rootStore.honey.honey]);
+      this.rootStore.realm.render();
     }, tickRate);
   }
 

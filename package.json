@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "parcel ./src/index.html",
     "build": "parcel build ./src/index.html --no-autoinstall --bundle-node-modules --no-source-maps --no-minify",
-    "lint": "eslint src"
+    "lint": "eslint src --fix"
   },
   "husky": {
     "hooks": {
@@ -19,6 +19,7 @@
   "dependencies": {
     "mobx": "^5.15.4",
     "mobx-react": "^6.2.2",
+    "mobx-react-lite": "^3.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
