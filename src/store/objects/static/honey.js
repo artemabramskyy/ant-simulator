@@ -11,4 +11,8 @@ export default class HoneyStore {
   @action remove = () => {
     this.honey.onGrid = false;
   }
+
+  @action add = () => {
+    this.honey.onGrid = true;
+  }
 }

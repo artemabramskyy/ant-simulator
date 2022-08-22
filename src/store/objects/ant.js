@@ -1,13 +1,15 @@
-import { observable, action, computed } from 'mobx';
+import { observable, action, computed, toJS } from 'mobx';
 import 'mobx-react-lite/batchingForReactDom';
 import configs from '~/configs';
 import randomizer from '~/utils/randomizer';
+import LearningLogic from '~/utils/LearningLogic';
 
 const { grid, tickRate } = configs.app;
 
 export default class AntStore {
   constructor(store) {
     this.rootStore = store;
+    this.learningLogic = new LearningLogic({ expectedResult: toJS(this.rootStore.honey.honey.position) });
   }
 
   @observable ant = configs.app.objects.ant;
@@ -16,7 +18,7 @@ export default class AntStore {
 
   @observable antBag = [];
 
-  @action _move = ({ direction }) => {
+  @action _move = async ({ direction, record }) => {
     switch (direction) {
       case 'right':
         if (this.ant.position.x + this.ant.velocity < grid.cells) {
@@ -39,29 +41,62 @@ export default class AntStore {
         }
         break;
     }
+
+    if (record) {
+      const isPositive = await this.learningLogic.processStepResult({ position: toJS(this.ant.position), direction });
+
+      if (!isPositive) {
+        this.ant.position.y = 0;
+        this.ant.position.x = 0;
+      }
+    }
     this._lookingFor();
     this._takeInBag();
-    this._putInBase();
   }
 
   @action _putInBase = () => {
     const { position } = this.rootStore.base.base;
-    if (this.rootStore.base.base.onGrid) {
+
+    if (this.rootStore.base.base.onGrid ) {
       if (this.ant.position.x === position.x && this.ant.position.y === position.y) {
         this.rootStore.base.put(this.antBag);
         this._removeFromBag();
+        this.rootStore.honey.add();
+
+        if (!this.learningLogic.isAdapted) {
+          this.initRandomMoves();
+        }
       }
     }
   }
 
-  @action _takeInBag = () => {
+  @action _takeInBag = async () => {
     const { position, type, icon } = this.rootStore.honey.honey;
     if (this.rootStore.honey.honey.onGrid) {
       if (this.ant.position.x === position.x && this.ant.position.y === position.y) {
         this.antBag.push({ type, icon });
         this.rootStore.honey.remove();
+        await this.learningLogic.saveEpoch();
+        this._returnToBase();
       }
     }
+  }
+
+  @action _returnToBase = () => {
+    const { position: basePosition } = this.rootStore.base.base;
+
+    const interval = setInterval(() => {
+      if (this.ant.position.y !== basePosition.y) {
+        this._move({ direction: 'up', record: false });
+      } else if (this.ant.position.x !== basePosition.x) {
+        this._move({ direction: 'left', record: false });
+      } else {
+        clearInterval(interval);
+        this._putInBase();
+      }
+
+      this.rootStore.realm.render();
+    }, tickRate);
   }
 
   @action _removeFromBag = () => {
@@ -84,16 +119,16 @@ export default class AntStore {
     document.addEventListener('keypress', e => {
       switch (e.code) {
         case 'KeyW':
-          this._move({ direction: 'up' });
+          this._move({ direction: 'up', record: true });
           break;
         case 'KeyS':
-          this._move({ direction: 'down' });
+          this._move({ direction: 'down', record: true });
           break;
         case 'KeyA':
-          this._move({ direction: 'left' });
+          this._move({ direction: 'left', record: true });
           break;
         case 'KeyD':
-          this._move({ direction: 'right' });
+          this._move({ direction: 'right', record: true });
           break;
       }
 
@@ -103,13 +138,17 @@ export default class AntStore {
 
   @action initRandomMoves = () => {
     const interval = setInterval(() => {
-      if (this.antIntentions.length) {
+      if (this.learningLogic.learnedBehaviour.length) {
+        const { direction } = this.learningLogic.shiftStep();
+
+        this._move({ direction, record: true });
+      } else if (this.antIntentions.length) {
         if (this._getMovesListToIntention.length === 1) {
           clearInterval(interval);
         }
-        this._move({ direction: this._getMovesListToIntention[0] });
+        this._move({ direction: this._getMovesListToIntention[0], record: true });
       } else {
-        this._move({ direction: randomizer.getDirection() });
+        this._move({ direction: randomizer.getDirection(), record: true });
       }
 
       this.rootStore.realm.render();

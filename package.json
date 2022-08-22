@@ -4,8 +4,10 @@
   "description": "Something with simulation.",
   "main": "dist/index.js",
   "scripts": {
-    "dev": "parcel ./src/index.html",
-    "build": "parcel build ./src/index.html --no-autoinstall --bundle-node-modules --no-source-maps --no-minify",
+    "back:dev": "nodemon ./src/server/index.js",
+    "front:dev": "parcel watch ./src/index.html",
+    "front:build": "parcel build ./src/index.html --no-autoinstall --bundle-node-modules --no-source-maps --no-minify",
+    "dev": "npm run front:dev && npm run back:dev",
     "lint": "eslint src --fix"
   },
   "husky": {
@@ -17,22 +19,26 @@
   "author": "Artem Abramskyy",
   "license": "ISC",
   "dependencies": {
+    "express": "^4.18.1",
     "mobx": "^5.15.4",
     "mobx-react": "^6.2.2",
     "mobx-react-lite": "^3.2.1",
+    "nodemon": "^2.0.16",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.6",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/plugin-proposal-decorators": "^7.8.3",
-    "@babel/plugin-proposal-optional-chaining": "^7.9.0",
-    "@babel/plugin-transform-runtime": "^7.9.6",
-    "@babel/polyfill": "^7.8.7",
-    "@babel/preset-env": "^7.9.6",
-    "@babel/preset-react": "^7.9.4",
-    "@babel/runtime": "^7.9.6",
+    "@babel/cli": "^7.17.10",
+    "@babel/core": "^7.17.10",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/plugin-proposal-decorators": "^7.17.9",
+    "@babel/plugin-proposal-optional-chaining": "^7.16.7",
+    "@babel/plugin-proposal-private-methods": "^7.16.11",
+    "@babel/plugin-transform-runtime": "^7.17.10",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.17.10",
+    "@babel/preset-react": "^7.16.7",
+    "@babel/runtime": "^7.17.9",
     "babel-eslint": "^10.1.0",
     "babel-plugin-module-resolver": "^4.0.0",
     "eslint": "^6.8.0",
@@ -41,6 +47,6 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
     "husky": "^4.2.5",
-    "parcel-bundler": "^1.12.4"
+    "parcel-bundler": "^1.12.3"
   }
 }

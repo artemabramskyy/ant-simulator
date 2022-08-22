@@ -1,6 +1,6 @@
 import { observable, action } from 'mobx';
 import configs from '~/configs';
-import World from '~/utils/world';
+import World from '~/utils/World';
 import grid from '~/utils/grid';
 
 export default class RealmStore {
@@ -8,20 +8,18 @@ export default class RealmStore {
     this.rootStore = store;
 
     this._initRealm();
-    // this.rootStore.ant.initRandomMoves();
-    this.rootStore.ant.initMoveSet();
+    this.rootStore.ant.initRandomMoves();
+    // this.rootStore.ant.initMoveSet();
     this.render();
   }
 
   @observable realm;
 
-  @action
-  _initRealm = () => {
+  @action _initRealm = () => {
     this.realm = new World({ gridSize: configs.app.grid.cells, canvasSize: configs.app.grid.size, grid });
   }
 
-  @action
-  render = () => {
+  @action render = () => {
     const entities = [this.rootStore.ant.ant];
 
     if (this.rootStore.honey.honey.onGrid) {
